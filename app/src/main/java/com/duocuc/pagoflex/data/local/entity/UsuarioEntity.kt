@@ -20,6 +20,9 @@ data class UsuarioEntity (
     @ColumnInfo(name = "id_usuario")
     val idUsuario: Int = 0,
 
+    @ColumnInfo(name = "rut")
+    val rut: String,
+
     @ColumnInfo(name = "id_rol")
     val idRol: Int,
 
