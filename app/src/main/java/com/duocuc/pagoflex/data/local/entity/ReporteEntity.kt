@@ -18,5 +18,7 @@ data class ReporteEntity(
 
     val fechaCreacion: Long = System.currentTimeMillis(),
 
-    val respuestaAgente: String? = null
+    val respuestaAgente: String? = null,
+
+    val fechaResolucion: Long? = null
 )
