@@ -17,6 +17,9 @@ interface ReporteDao {
     @Query("SELECT * FROM reportes WHERE estado = :estado ORDER BY fechaCreacion DESC")
     fun obtenerPorEstado(estado: String): Flow<List<ReporteEntity>>
 
+    @Query("SELECT * FROM reportes WHERE id = :id")
+    suspend fun obtenerPorId(id: Int): ReporteEntity?
+
     @Query("UPDATE reportes SET estado = 'En Gestion' WHERE id = :id")
     suspend fun tomarReporte(id: Int)
 
