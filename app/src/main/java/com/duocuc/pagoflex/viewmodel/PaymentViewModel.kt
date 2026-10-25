@@ -15,6 +15,8 @@ import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.UUID
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 
 data class PaymentState(
     val procesando: Boolean = false,
@@ -30,6 +32,13 @@ class PaymentViewModel(
 
     private val _estado = MutableStateFlow(PaymentState())
     val estado: StateFlow<PaymentState> = _estado.asStateFlow()
+    val historialPagos: StateFlow<List<PagoEntity>> =
+        pagoDao.obtenerTodos()
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(5000),
+                emptyList()
+            )
 
     fun pagarCompromiso(
         idCompromiso: Int,
@@ -70,14 +79,13 @@ class PaymentViewModel(
                     return@launch
                 }
 
-                // Validar que sea el compromiso más antiguo
-                // pendiente o vencido de la misma empresa.
+
                 val compromisosEmpresa =
                     compromisoDao.obtenerPorEmpresa(
                         compromiso.idEmpresa
                     ).first()
 
-                // IDs provisionales: 1 = Pendiente, 2 = Vencido.
+
                 val estadosPorPagar = listOf(1, 2)
 
                 val compromisoMasAntiguo = compromisosEmpresa
@@ -96,9 +104,10 @@ class PaymentViewModel(
                 val numeroComprobante =
                     "PF-${UUID.randomUUID().toString().take(8).uppercase()}"
 
-                val fechaHora = LocalDateTime.now().format(
-                    DateTimeFormatter.ISO_LOCAL_DATE_TIME
-                )
+                val fechaHora = java.text.SimpleDateFormat(
+                    "yyyy-MM-dd'T'HH:mm:ss",
+                    java.util.Locale.getDefault()
+                ).format(java.util.Date())
 
                 val pago = PagoEntity(
                     numeroComprobante = numeroComprobante,
@@ -111,13 +120,14 @@ class PaymentViewModel(
 
                 pagoDao.insertar(pago)
 
-                // ID 3 provisional: estado Pagado.
+
+
                 compromisoDao.actualizar(
-                    compromiso.copy(
-                        idEstadoCompromiso = 3,
-                        fechaCambioEstado = fechaHora
-                    )
+                    id = compromiso.idCompromiso,
+                    estado = 3,
+                    fecha = fechaHora
                 )
+
 
                 _estado.value = PaymentState(
                     pagoExitoso = true,
