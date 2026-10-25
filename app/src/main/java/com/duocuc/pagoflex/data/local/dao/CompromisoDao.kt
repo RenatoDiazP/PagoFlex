@@ -11,8 +11,6 @@ package com.duocuc.pagoflex.data.local.dao
 
     @Dao
     interface CompromisoDao {
-
-
         @Insert(onConflict = OnConflictStrategy.ABORT)
         suspend fun insertar(compromiso: CompromisoEntity): Long
 
@@ -52,8 +50,8 @@ package com.duocuc.pagoflex.data.local.dao
         suspend fun obtenerPorId(idCompromiso: Int): CompromisoEntity?
 
 
-        @Update
-        suspend fun actualizar(compromiso: CompromisoEntity): Int
+        @Query("UPDATE compromisos SET id_estado_compromiso = :estado, fecha_cambio_estado = :fecha WHERE id_compromiso = :id")
+        suspend fun actualizar(id: Int, estado: Int, fecha: String)
 
 
         @Query("""
@@ -62,4 +60,3 @@ package com.duocuc.pagoflex.data.local.dao
     """)
         suspend fun eliminarPorId(idCompromiso: Int): Int
     }
-

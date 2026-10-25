@@ -8,7 +8,7 @@ class AnulacionEntity(
     @PrimaryKey(autoGenerate = true)
     val id:Int = 0,
 
-    val compomisoId:Int,
+    val compromisoId:Int,
     val motivo:String,
     val usuario:String,
     val fecha:Long = System.currentTimeMillis()
