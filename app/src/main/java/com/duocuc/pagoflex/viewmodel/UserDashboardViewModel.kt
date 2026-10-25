@@ -29,7 +29,10 @@ class UserDashboardViewModel(
         compromisoDao.obtenerPorUsuario(usuarioId)
             .map { compromisos ->
 
-                val hoy = LocalDate.now()
+                val hoy = java.text.SimpleDateFormat(
+                    "yyyy-MM-dd",
+                    java.util.Locale.getDefault()
+                ).format(java.util.Date())
 
                 val pendientes = compromisos.filter {
                     it.idEstadoCompromiso == 1
@@ -43,8 +46,7 @@ class UserDashboardViewModel(
                     totalPorPagar = pendientes.sumOf { it.monto },
                     proximaFechaVencimiento = pendientes
                         .filter {
-                            LocalDate.parse(it.fechaVencimiento).isAfter(hoy) ||
-                                    LocalDate.parse(it.fechaVencimiento).isEqual(hoy)
+                            it.fechaVencimiento >= hoy
                         }
                         .minByOrNull { it.fechaVencimiento }
                         ?.fechaVencimiento,

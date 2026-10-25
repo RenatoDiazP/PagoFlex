@@ -79,7 +79,10 @@ class RecommendationViewModel(
                         ?.takeIf { it.isNotEmpty() },
                     idRubro = idRubro,
                     idComuna = idComuna,
-                    fecha = LocalDate.now().toString(),
+                    fecha = java.text.SimpleDateFormat(
+                        "yyyy-MM-dd",
+                        java.util.Locale.getDefault()
+                    ).format(java.util.Date()),
                     idEstadoRecomendacion = 1
                 )
 
