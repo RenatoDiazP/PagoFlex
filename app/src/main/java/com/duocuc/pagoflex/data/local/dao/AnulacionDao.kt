@@ -10,6 +10,6 @@ interface AnulacionDao{
     @Insert
     suspend fun registrarAnulacion(anulacion: AnulacionEntity)
 
-    @Query("SELECT * FROM anulaciones WHERE compromisoId = :id")
+    @Query("SELECT * FROM anulaciones WHERE id_compromiso = :id")
     suspend fun obtenerPorCompromiso(id: Int): List<AnulacionEntity>
 }

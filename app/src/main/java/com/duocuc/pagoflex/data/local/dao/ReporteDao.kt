@@ -17,17 +17,17 @@ interface ReporteDao {
     @Query("SELECT * FROM reportes WHERE estado = :estado ORDER BY fechaCreacion DESC")
     fun obtenerPorEstado(estado: String): Flow<List<ReporteEntity>>
 
-    @Query("SELECT * FROM reportes WHERE id = :id")
+    @Query("SELECT * FROM reportes WHERE id_reporte = :id")
     suspend fun obtenerPorId(id: Int): ReporteEntity?
 
-    @Query("UPDATE reportes SET estado = 'En Gestion' WHERE id = :id")
+    @Query("UPDATE reportes SET estado = 'En Gestion' WHERE id_reporte = :id")
     suspend fun tomarReporte(id: Int)
 
     @Query("""UPDATE reportes 
         SET estado = 'Resuelto',
             respuestaAgente = :respuesta,
             fechaResolucion = :fecha
-        WHERE id = :id
+        WHERE id_reporte = :id
     """)
     suspend fun resolverReporte(id:Int, respuesta:String, fecha: Long = System.currentTimeMillis())
 

@@ -6,6 +6,6 @@ import com.duocuc.pagoflex.data.local.entity.EmpresaClienteEntity
 
 @Dao
 interface   EmpresaClienteDao {
-    @Query("SELECT * FROM empresa_cliente WHERE id = :empresaId")
+    @Query("SELECT * FROM empresa_cliente WHERE id_empresa = :empresaId")
     suspend fun obtenerEmpresa(empresaId: Int): EmpresaClienteEntity?
 }
