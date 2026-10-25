@@ -11,5 +11,6 @@ data class ReporteUiState(
     val descripcion: String = "",
     val imagen: String? = null,
     val estado: EstadoReporte = EstadoReporte.ABIERTO,
-    val error: String? = null
+    val errorTitulo: String? = null,
+    val errorDescipcion: String? = null
 )
