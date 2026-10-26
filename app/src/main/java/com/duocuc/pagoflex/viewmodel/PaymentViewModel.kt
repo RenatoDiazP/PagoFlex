@@ -1,11 +1,10 @@
 package com.duocuc.pagoflex.viewmodel
 
-
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.duocuc.pagoflex.data.local.dao.CompromisoDao
 import com.duocuc.pagoflex.data.local.dao.PagoDao
+import com.duocuc.pagoflex.data.local.entity.CompromisoEntity
 import com.duocuc.pagoflex.data.local.entity.PagoEntity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -40,6 +39,12 @@ class PaymentViewModel(
                 emptyList()
             )
 
+    fun obtenerCompromiso(id: Int, onResultado: (CompromisoEntity?) -> Unit){
+        viewModelScope.launch {
+            val compromiso = compromisoDao.obtenerPorId(id)
+            onResultado(compromiso)
+        }
+    }
     fun pagarCompromiso(
         idCompromiso: Int,
         idMedioPago: Int
